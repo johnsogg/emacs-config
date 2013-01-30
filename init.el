@@ -33,6 +33,7 @@
 
 (global-set-key "\M-c" 'copy-region-as-kill)
 (global-set-key "\M-v" 'yank)
+(global-set-key "\M-g" 'goto-line)
 
 (setenv "PATH"
 	(concat
