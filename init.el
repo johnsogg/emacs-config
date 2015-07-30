@@ -13,14 +13,19 @@
 (setq mac-command-modifier 'meta)
 
 (require 'package)
-(add-to-list 'package-archives 
-    '("marmalade" .
-      "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives 
+;;     '("marmalade" .
+;;       "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
 (setq visible-bell t)
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+    (setq exec-path (append exec-path '("/usr/local/bin")))
 
 ;; uniquify: ensures two buffers are easiliy distinguished by
 ;; appending contending buffers with their file directory. Eg. if you
@@ -39,3 +44,43 @@
 	(concat
 	 "/usr/local/bin" ":"
 	 (getenv "PATH")))
+
+(global-set-key "\M-!" 'texshop-typeset)
+(global-set-key "\M-@" 'texshop-bibtex)
+
+(defun texshop-typeset ()
+  (interactive)
+  (let ((docname (expand-file-name (buffer-file-name))))
+    (do-applescript 
+     (format "tell application \"TeXShop\" to open_for_externaleditor at \"%s\"" docname))
+    (do-applescript 
+     (format "tell application \"TeXShop\" to typeset document \"%s\"" 
+	     (file-name-nondirectory docname)))))
+
+(defun texshop-bibtex ()
+  (interactive)
+  (let ((docname (expand-file-name (buffer-file-name))))
+    (do-applescript 
+     (format "tell application \"TeXShop\" to open_for_externaleditor at \"%s\"" docname))
+    (do-applescript 
+     (format "tell application \"TeXShop\" to bibtex document \"%s\"" 
+	     (file-name-nondirectory docname)))))
+
+;; Golang stuff
+
+(load "~/.emacs.d/go.el")
+; (add-hook 'before-save-hook 'gofmt-before-save)
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(js-indent-level 2))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
