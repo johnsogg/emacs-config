@@ -11,7 +11,7 @@
 (setq inhibit-startup-screen t)
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
-
+(set-default-font "Monaco 16")
 (require 'package)
 ;; (add-to-list 'package-archives 
 ;;     '("marmalade" .
@@ -98,4 +98,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(highlight ((t (:background "light green" :foreground "textColor" :underline t)))))
