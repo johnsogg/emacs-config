@@ -16,8 +16,11 @@
 ;; (add-to-list 'package-archives 
 ;;     '("marmalade" .
 ;;       "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+;(add-to-list 'package-archives
+;             '("melpa" . "https://melpa.org/packages/"))
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                     ("marmalade" . "https://marmalade-repo.org/packages/")
+                     ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
@@ -65,6 +68,18 @@
     (do-applescript 
      (format "tell application \"TeXShop\" to bibtex document \"%s\"" 
 	     (file-name-nondirectory docname)))))
+
+;; Let Emacs use the path environment variable that the shell uses.
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
 
 ;; Golang stuff
 
