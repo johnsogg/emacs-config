@@ -28,7 +28,7 @@
   ; Customize compile command to build, test, vet.
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
-           "go generate && go build -v && go test -v && go vet"))
+           "go generate && go build -v && go test"))
 					; Tab settings
   (setq tab-width 2)
   (set-face-background 'hl-line "#3e4446")
@@ -43,6 +43,6 @@
   (local-set-key (kbd "M-P") 'recompile)
   (local-set-key (kbd "M-p") 'compile))
 (add-hook 'go-mode-hook 'my-go-mode-hook)
-(add-hook 'go-mode-hook 'auto-complete-mode)
+; (add-hook 'go-mode-hook 'auto-complete-mode)
 (add-hook 'go-mode-hook 'auto-highlight-symbol-mode)
 (add-hook 'go-mode-hook 'hl-line-mode)
