@@ -16,7 +16,6 @@
 (load-file "$GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el")
 (defun my-go-mode-hook ()
   ; Use goimports instead of go-fmt
-  (setq gofmt-command "goimports")
 
   ; Call Gofmt before saving                                                    
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -28,21 +27,30 @@
   ; Customize compile command to build, test, vet.
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
-           "go generate && go build -v && go test"))
+           "gb build -v  && gb test"))
 					; Tab settings
   (setq tab-width 2)
   (set-face-background 'hl-line "#3e4446")
   (set-face-foreground 'highlight nil)
   (set-face-attribute hl-line-face nil :underline nil)
 
-  ; Godef jump key binding                                                      
+					; Godef jump key binding
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "M-,") 'go-oracle-callees)
   (local-set-key (kbd "M-]") 'next-error)
   (local-set-key (kbd "M-[") 'previous-error)
   (local-set-key (kbd "M-P") 'recompile)
-  (local-set-key (kbd "M-p") 'compile))
+  (local-set-key (kbd "M-p") 'compile)
+
+  (local-set-key (kbd "M-0")
+		 '(lambda () (interactive)
+		    (global-text-scale-adjust (- text-scale-mode-amount))
+		    (global-text-scale-mode -1)))
+  (local-set-key (kbd "M-=")
+		 '(lambda () (interactive) (global-text-scale-adjust 1)))
+  (local-set-key (kbd "M--")
+		  '(lambda () (interactive) (global-text-scale-adjust -1)))
+)
 (add-hook 'go-mode-hook 'my-go-mode-hook)
-; (add-hook 'go-mode-hook 'auto-complete-mode)
-(add-hook 'go-mode-hook 'auto-highlight-symbol-mode)
+; (add-hook 'go-mode-hook 'auto-highlight-symbol-mode)
 (add-hook 'go-mode-hook 'hl-line-mode)
