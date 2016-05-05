@@ -25,7 +25,8 @@
 
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
-(setq visible-bell t)
+(setq visible-bell nil) ;; The default
+(setq ring-bell-function 'ignore)
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
     (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -120,3 +121,4 @@
 		'(lambda () (interactive) (global-text-scale-adjust 1)))
 (global-set-key (kbd "M--")
 		'(lambda () (interactive) (global-text-scale-adjust -1)))
+(put 'upcase-region 'disabled nil)
