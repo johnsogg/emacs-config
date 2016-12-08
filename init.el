@@ -21,6 +21,10 @@
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
+;; Neotree 
+(global-set-key [f8] 'neotree-toggle) ; keybinding is global
+(setq neo-smart-open t)               ; find current file on open
+
 (load-theme 'atom-one-dark t)       ; Color theme installed via melpa
 
 ;; Add a directory to the load path so we can put extra files there
