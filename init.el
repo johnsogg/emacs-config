@@ -26,6 +26,9 @@
 (setq neo-smart-open t)               ; find current file on open
 
 (load-theme 'atom-one-dark t)       ; Color theme installed via melpa
+(set-face-attribute
+ 'highlight nil :background "#5EF763"
+ :foreground "#444")
 
 ;; Add a directory to the load path so we can put extra files there
 (add-to-list 'load-path "~/.emacs.d/lisp/")
