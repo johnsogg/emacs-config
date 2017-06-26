@@ -31,7 +31,7 @@
  '(menu ((t (:foreground "#333333" :background "#ffffff"))))
  '(minibuffer-prompt ((t (:foreground "#a71d5d"))))
  '(mode-line ((t (:background "#d0d0d0" :foreground "#202020"))))
- '(mode-line-buffer-id ((t (:foreground "#000000" :weight bold))))
+ '(mode-line-buffer-id ((t (:foreground "#333333" :background "#d0d0d0" :weight bold))))
  '(mode-line-inactive ((t (:foreground "#969896" :background "#ffffff" :box (:line-width -1 :color "#d0d0d0")))))
  '(region ((((class color) (min-colors 89)) (:background "#b0cde7")) (t :inverse-video t)))
  '(secondary-selection ((t (:background "#ffffff"))))

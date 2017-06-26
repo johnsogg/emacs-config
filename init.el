@@ -18,6 +18,9 @@
 ;; Highlight paren mode
 (setq show-paren-style 'expression) ; Alternatives are 'parenthesis, 'mixed
 (show-paren-mode 1)
+(set-face-background 'show-paren-match (face-background 'default))
+; (set-face-foreground 'show-paren-match "#ddeeff")
+(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
 ;; Set up package repositories so M-x package-install works.
 (require 'package) 
@@ -32,6 +35,7 @@
 ;; Neotree 
 (global-set-key [f8] 'neotree-toggle) ; keybinding is global
 (setq neo-smart-open t)               ; find current file on open
+
 
 ;; Color theme
 ;; (load-theme 'johnsogg-dark t)         ; My colors for optimal rad.
@@ -57,7 +61,8 @@
   (go-guru-hl-identifier-mode)                    ; highlight identifiers
   
   ;; Key bindings specific to go-mode
-  (local-set-key (kbd "M-.") 'godef-jump-other-window) ; Go to definition
+  (local-set-key (kbd "M-.") 'godef-jump)         ; Go to definition
+  (local-set-key (kbd "M-s-.") 'godef-jump-other-window) ; Same, use other window
   (local-set-key (kbd "M-*") 'pop-tag-mark)       ; Return from whence you came
   (local-set-key (kbd "M-p") 'compile)            ; Invoke compiler
   (local-set-key (kbd "M-P") 'recompile)          ; Redo most recent compile command
@@ -66,18 +71,24 @@
 
   ;; Misc go stuff
   (setq tab-width 2)                              ; Somehow gets overwritten?
-  ;; (auto-complete-mode 1)                         ; Enable auto-complete mode
+
 )
 
 ;; Connect go-mode-hook with the function we just defined
 (add-hook 'go-mode-hook 'my-go-mode-hook)
 
 ;; Ensure the go specific autocomplete is active in go-mode.
-;;(with-eval-after-load 'go-mode
-;;   (require 'go-autocomplete))
+(with-eval-after-load 'go-mode
+  (require 'go-autocomplete)
+  (require 'auto-complete-config)
+  (ac-config-default))
 
 ;; If the go-guru.el file is in the load path, this will load it.
 (require 'go-guru)
+
+;; Projectile mode lets you switch projects and has useful hooks for
+;; doing things like set your GOPATH when switching projects.
+(projectile-mode)
 
 ;; Use reasonable keybindings to change font size for all buffers.
 (define-globalized-minor-mode 
@@ -110,6 +121,11 @@
                "2 sec" nil 'delete-windows-on
                (get-buffer-create "*compilation*"))
               (message "No Compilation Errors!")))))
+
+;; Projectile hook for project switching.
+(defun my-switch-project-hook ()
+  (go-set-project))
+(add-hook 'projectile-after-switch-project-hook #'my-switch-project-hook)
 
 ;; From https://superuser.com/questions/455331/emacs-how-to-re-mark-a-previously-marked-region
 ;; - First establish the bounds of the intitial region (mark -- point).
@@ -154,10 +170,11 @@
    ["#ffffff" "#183691" "#969896" "#a71d5d" "#969896" "#969896" "#795da3" "#969896"])
  '(custom-safe-themes
    (quote
-    ("16a78dd28b8cca6a9ae00cbf47feef88389bbd10647f1185618fa20b1bebb5ae" "4ed33a2def96b6ed3510d461a20bad9a0c33414a59715bbbf09be77ccde7211c" default)))
+    ("74e24f29db785033bcf866f54026a3afa56e68ad96bc400f12bd8146b1f37647" "40737e67fbe410a7b852a2eceb33b95ac5a72da81fccfcdc75e16483e60efe38" "a3acbb36707e44e06a01bff579bef51ecfab0fb25c2116a105adb472694ec2e7" "b22d77fcb0d9aff943edd86396fca7ff6da45c42ba115db4e7d585e3804aa5d7" "f5b3f02e37afb5938edb84c05300c15b4d33bd0f449716c7e2eeabb56554c4b9" "4b54f7fd220c061c1c798d8744029df4ec4419b5929e1a5c76f2e0f9e2b1af9a" "98d209aa47b458a73196be9c51611c82b74f7c11672169dc792b4652c0a81da4" "5ea108b0b623979465fee5db9071e0052e0b3c0c9d018e507391e14315fbed3b" "c4d8f0fd2b69194deac8aabaddf8b89517629fd9b76c0b08350762a79058bb2e" "c4a236af4ed91fbb5dc3f10f954210ee4e2d6a524ab02ae4bdb957db7acb8b73" "16a78dd28b8cca6a9ae00cbf47feef88389bbd10647f1185618fa20b1bebb5ae" "4ed33a2def96b6ed3510d461a20bad9a0c33414a59715bbbf09be77ccde7211c" default)))
  '(package-selected-packages
    (quote
-    (smooth-scroll emojify yaml-mode neotree multi-compile markdown-mode go-rename go-autocomplete github-theme flymake-go exec-path-from-shell atom-one-dark-theme))))
+    (git-gutter git ag flx-ido projectile rainbow-mode smooth-scroll emojify yaml-mode neotree multi-compile markdown-mode go-rename go-autocomplete github-theme flymake-go exec-path-from-shell atom-one-dark-theme)))
+ '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

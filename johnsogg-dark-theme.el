@@ -1,9 +1,5 @@
 (deftheme johnsogg-dark
-  "Gabe's theme based on atom-one-dark")
-
-(custom-theme-set-variables
- 'johnsogg-dark
- )
+  "Created 2017-06-12.")
 
 (custom-theme-set-faces
  'johnsogg-dark
@@ -33,7 +29,7 @@
  '(font-lock-variable-name-face ((t (:foreground "#E06C75"))))
  '(font-lock-warning-face ((t (:foreground "#5C6370" :bold t))))
  '(mode-line ((t (:background "#0F1011" :foreground "#AAAAAA"))))
- '(mode-line-buffer-id ((t (:weight bold))))
+ '(mode-line-buffer-id ((t (:background "black" :foreground "light green" :weight normal))))
  '(mode-line-emphasis ((t (:weight bold))))
  '(mode-line-inactive ((t (:background "#3E4451"))))
  '(compilation-line-number ((t (:foreground "#828997"))))
@@ -41,9 +37,8 @@
  '(isearch ((t (:foreground "#282C34" :background "#C678DD"))))
  '(isearch-fail ((t (:foreground "#BE5046" :background nil))))
  '(lazy-highlight ((t (:foreground "#C678DD" :background "#121417" :underline "#C678DD"))))
- '(dired-directory ((t (:inherit (font-lock-keyword-face)))))
- '(dired-flagged ((t (:inherit (diff-hl-delete)))))
- '(dired-symlink ((t (:foreground "#FD5FF1"))))
+ '(show-paren-mismatch ((t (:foreground "#969896" :background "#ffffff" :weight bold))))
+ '(show-paren-match ((t (:background "#333944" :weight bold))))
  '(default ((t (:foreground "#ABB2BF" :background "#282C34")))))
 
 (provide-theme 'johnsogg-dark)
