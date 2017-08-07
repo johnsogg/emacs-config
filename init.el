@@ -53,9 +53,10 @@
 (defun my-go-mode-hook ()
   (add-hook 'before-save-hook 'gofmt-before-save) ; gofmt before every save
   (setq gofmt-command "goimports")                ; gofmt actually invokes goimports
-  (if (not (string-match "go" compile-command))   ; change compile command default
-      (set (make-local-variable 'compile-command)
-           "gb build"))
+  ;; (if (not (string-match "go" compile-command))   ; change compile command default
+  ;;     (set (make-local-variable 'compile-command)
+  ;;          "go build"))
+  (set (make-local-variable 'compile-command) (format "make -f %s" (get-closest-pathname)))
 
   ;; guru settings
   (go-guru-hl-identifier-mode)                    ; highlight identifiers
@@ -89,6 +90,8 @@
 ;; Projectile mode lets you switch projects and has useful hooks for
 ;; doing things like set your GOPATH when switching projects.
 (projectile-mode)
+(global-set-key (kbd "M-f") 'projectile-ag)
+(global-set-key (kbd "M-o") 'projectile-find-file)
 
 ;; Use reasonable keybindings to change font size for all buffers.
 (define-globalized-minor-mode 
@@ -158,6 +161,19 @@
 (smooth-scroll-mode 1)
 
 
+(defun* get-closest-pathname (&optional (file "Makefile"))
+  "Determine the pathname of the first instance of FILE starting from the current directory towards root.
+This may not do the correct thing in presence of links. If it does not find FILE, then it shall return the name
+of FILE in the current directory, suitable for creation"
+  (let ((root (expand-file-name "/"))) ; the win32 builds should translate this correctly
+    (expand-file-name file
+		      (loop 
+			for d = default-directory then (expand-file-name ".." d)
+			if (file-exists-p (expand-file-name file d))
+			return d
+			if (equal d root)
+			return nil))))
+
 ;; -------------- Everything below here is automatically added by programs -----
 
 
@@ -174,6 +190,12 @@
  '(package-selected-packages
    (quote
     (git-gutter git ag flx-ido projectile rainbow-mode smooth-scroll emojify yaml-mode neotree multi-compile markdown-mode go-rename go-autocomplete github-theme flymake-go exec-path-from-shell atom-one-dark-theme)))
+ '(safe-local-variable-values
+   (quote
+    ((projectile-project-test-cmd . "go test $(go list github.com/bslate/... | grep -v vendor)")
+     (projectile-project-compilation-cmd . "go install $(go list github.com/bslate/... | grep -v vendor)")
+     (projectile-project-test-cmd . "fooooo")
+     (projectile-project-compilation-cmd . "cd ~/Projects/go/src/github.com/bslate ; go install $(go list ./... | grep -v vendor)"))))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
